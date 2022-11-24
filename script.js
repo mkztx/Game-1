@@ -96,12 +96,7 @@ function feedFlorcia() {
 	createFlorcia.style.height = `${florciaHeight}px`;
 	createFlorcia.style.width = `${florciaWidth}px`;
 }
-function decreaseFlorcia() {
-	florciaHeight = florciaHeight - Math.floor(florciaHeight * 0.5);
-	florciaWidth = florciaWidth - Math.floor(florciaWidth * 0.5);
-	createFlorcia.style.height = `${florciaHeight}px`;
-	createFlorcia.style.width = `${florciaWidth}px`;
-}
+
 let foodY = 0;
 let foodX = 0;
 function createFood() {
@@ -138,13 +133,22 @@ function checkForEating() {
 }
 let points = 0;
 function eatAndSpawnNew() {
+	const pointsbox = document.querySelector('.points');
+
 	if (checkForEating()) {
 		points++;
 		feedFlorcia();
 		const prevBurger = document.querySelector('.burger');
 		main.removeChild(prevBurger);
 		createFood();
-		const pointsbox = document.querySelector('.points');
+		pointsbox.innerText = `score: ${points}`;
+	}
+	if (checkForEatingRotten()) {
+		points--;
+		decreaseFlorcia();
+		const prevRottenBurger = document.querySelector('.rotten');
+		main.removeChild(prevRottenBurger);
+		createRottenFood();
 		pointsbox.innerText = `score: ${points}`;
 	}
 }

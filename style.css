@@ -27,3 +27,7 @@
 	right: 50px;
 	font-size: 40px;
 }
+.rotten {
+	position: absolute;
+	filter: hue-rotate(50deg);
+}
