@@ -97,8 +97,8 @@ function feedFlorcia() {
 	createFlorcia.style.width = `${florciaWidth}px`;
 }
 function decreaseFlorcia() {
-	florciaHeight = florciaHeight - florciaHeight * 0.5;
-	florciaWidth = florciaWidth - florciaWidth * 0.5;
+	florciaHeight = florciaHeight - Math.floor(florciaHeight * 0.5);
+	florciaWidth = florciaWidth - Math.floor(florciaWidth * 0.5);
 	createFlorcia.style.height = `${florciaHeight}px`;
 	createFlorcia.style.width = `${florciaWidth}px`;
 }
@@ -189,21 +189,37 @@ function spawnOpponent() {
 	main.appendChild(createOpponent);
 }
 function moveOpponent() {
+	const florcia = document?.querySelector('.florcia');
+	let florciaPosition = florcia?.getBoundingClientRect();
+
 	//let distance = 35;
-	let distance = florciaWidth + florciaWidth * 0.3;
+	let distance = florciaWidth + Math.floor(florciaWidth * 0.3);
 	if (!win) {
 		const opponent = document.querySelector('.opponent');
-		if (opponentX < florciaLeft) {
+
+		if (opponentX < florciaPosition.left) {
 			opponentX = opponentX + distance;
+			if (opponentX > monitorWidth) {
+				opponentX = monitorWidth - 100;
+			}
 		}
-		if (opponentX > florciaLeft) {
+		if (opponentX > florciaPosition.right) {
 			opponentX = opponentX - distance;
+			if (opponentX <= 0) {
+				opponentX = 0;
+			}
 		}
-		if (opponentY < florciaTop) {
+		if (opponentY < florciaPosition.top) {
 			opponentY = opponentY + distance;
+			if (opponentY >= monitorHeight) {
+				opponentY = monitorHeight - 100;
+			}
 		}
-		if (opponentY > florciaTop) {
+		if (opponentY > florciaPosition.bottom) {
 			opponentY = opponentY - distance;
+			if (opponentY <= 0) {
+				opponentY = 100;
+			}
 		}
 
 		opponent.style.top = `${opponentY}px`;

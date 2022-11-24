@@ -1,9 +1,11 @@
 .florcia {
 	position: absolute;
 	transition: all 0.2s linear;
+	border: 2px solid red;
 }
 .burger {
 	position: absolute;
+	border: 2px solid red;
 }
 .win {
 	position: absolute;
@@ -16,7 +18,8 @@
 .opponent {
 	position: absolute;
 	transition: all 0.5s linear;
-	transform: rotate(-45deg);
+	/* transform: rotate(-45deg); */
+	border: 2px solid red;
 }
 .points {
 	position: absolute;
