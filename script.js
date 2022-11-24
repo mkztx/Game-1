@@ -12,6 +12,27 @@ let florciaLeft = 0;
 let monitorWidth = window.innerWidth;
 let monitorHeight = window.innerHeight;
 
+let speedMultiplier = () => {
+	if (1400 < monitorWidth) {
+		return 2;
+	}
+	if (1200 < monitorWidth) {
+		return 1.8;
+	}
+	if (1000 < monitorWidth) {
+		return 1.6;
+	}
+	if (800 < monitorWidth) {
+		return 1.4;
+	}
+	if (500 < monitorWidth) {
+		return 1.2;
+	}
+	if (monitorWidth < 500) {
+		return 1;
+	}
+};
+
 createFlorcia.setAttribute('src', 'photos/florcia.png');
 createFlorcia.classList.add('florcia');
 createFlorcia.style.height = `${florciaHeight}px`;
@@ -23,25 +44,25 @@ main.appendChild(createFlorcia);
 function moveFlorcia(direction) {
 	switch (direction) {
 		case 'up':
-			florciaTop = florciaTop - florciaHeight;
+			florciaTop = florciaTop - florciaHeight * speedMultiplier();
 			if (florciaTop <= 0) {
 				florciaTop = 0;
 			}
 			break;
 		case 'down':
-			florciaTop = florciaTop + florciaHeight;
+			florciaTop = florciaTop + florciaHeight * speedMultiplier();
 			if (florciaTop >= monitorHeight) {
 				florciaTop = monitorHeight - florciaHeight;
 			}
 			break;
 		case 'left':
-			florciaLeft = florciaLeft - florciaWidth * 0.7;
+			florciaLeft = florciaLeft - florciaWidth * 0.7 * speedMultiplier();
 			if (florciaLeft <= 0) {
 				florciaLeft = 0;
 			}
 			break;
 		case 'right':
-			florciaLeft = florciaLeft + florciaWidth * 0.7;
+			florciaLeft = florciaLeft + florciaWidth * 0.7 * speedMultiplier();
 			if (florciaLeft >= monitorWidth) {
 				florciaLeft = monitorWidth - florciaWidth;
 			}
@@ -197,7 +218,7 @@ function moveOpponent() {
 	let florciaPosition = florcia?.getBoundingClientRect();
 
 	//let distance = 35;
-	let distance = florciaWidth + Math.floor(florciaWidth * 0.3);
+	let distance = florciaWidth + florciaWidth * speedMultiplier();
 	if (!win) {
 		const opponent = document.querySelector('.opponent');
 
