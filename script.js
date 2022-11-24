@@ -52,19 +52,30 @@ function moveFlorcia(direction) {
 }
 
 document.addEventListener('keydown', (e) => {
+	const florcia = document.querySelector('.florcia');
+
 	if (!win) {
 		switch (e.key) {
 			case 'w':
 				moveFlorcia('up');
+				florcia.style.transform = 'rotate(-90deg)';
+
 				break;
 			case 's':
 				moveFlorcia('down');
+				florcia.style.transform = 'rotate(90deg)';
+
 				break;
 			case 'a':
 				moveFlorcia('left');
+				florcia.style.transform = 'rotate(180deg)';
+				florcia.style.transform = 'scale(-1,1)';
+
 				break;
 			case 'd':
 				moveFlorcia('right');
+				florcia.style.transform = 'rotate(0deg)';
+
 				break;
 			case 'f':
 				feedFlorcia();
@@ -125,13 +136,16 @@ function checkForEating() {
 		burgerPosition.top < florciaPosition.bottom
 	);
 }
-
+let points = 0;
 function eatAndSpawnNew() {
 	if (checkForEating()) {
+		points++;
 		feedFlorcia();
 		const prevBurger = document.querySelector('.burger');
 		main.removeChild(prevBurger);
 		createFood();
+		const pointsbox = document.querySelector('.points');
+		pointsbox.innerText = `score: ${points}`;
 	}
 }
 
@@ -175,19 +189,21 @@ function spawnOpponent() {
 	main.appendChild(createOpponent);
 }
 function moveOpponent() {
+	//let distance = 35;
+	let distance = florciaWidth + florciaWidth * 0.3;
 	if (!win) {
 		const opponent = document.querySelector('.opponent');
 		if (opponentX < florciaLeft) {
-			opponentX = opponentX + 50;
+			opponentX = opponentX + distance;
 		}
 		if (opponentX > florciaLeft) {
-			opponentX = opponentX - 50;
+			opponentX = opponentX - distance;
 		}
 		if (opponentY < florciaTop) {
-			opponentY = opponentY + 50;
+			opponentY = opponentY + distance;
 		}
 		if (opponentY > florciaTop) {
-			opponentY = opponentY - 50;
+			opponentY = opponentY - distance;
 		}
 
 		opponent.style.top = `${opponentY}px`;
@@ -198,7 +214,7 @@ function moveOpponent() {
 
 setInterval(() => {
 	moveOpponent();
-}, 1000);
+}, 500);
 
 function checkForLose() {
 	const florcia = document.querySelector('.florcia');

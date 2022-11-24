@@ -18,3 +18,9 @@
 	transition: all 0.5s linear;
 	transform: rotate(-45deg);
 }
+.points {
+	position: absolute;
+	top: 50px;
+	right: 50px;
+	font-size: 40px;
+}
