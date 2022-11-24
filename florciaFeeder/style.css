@@ -1,0 +1,20 @@
+.florcia {
+	position: absolute;
+	transition: all 0.2s linear;
+}
+.burger {
+	position: absolute;
+}
+.win {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 80px;
+	color: red;
+}
+.opponent {
+	position: absolute;
+	transition: all 0.5s linear;
+	transform: rotate(-45deg);
+}
