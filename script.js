@@ -70,6 +70,7 @@ function moveFlorcia(direction) {
 	}
 	createFlorcia.style.top = `${florciaTop}px`;
 	createFlorcia.style.left = `${florciaLeft}px`;
+	klapekCheck();
 }
 
 document.addEventListener('keydown', (e) => {
@@ -214,42 +215,78 @@ function spawnOpponent() {
 	main.appendChild(createOpponent);
 }
 function moveOpponent() {
-	const florcia = document?.querySelector('.florcia');
-	let florciaPosition = florcia?.getBoundingClientRect();
+	const opponent = document?.querySelector('.opponent');
+	if (opponent != null) {
+		let opponentPosition = opponent.getBoundingClientRect();
+		const florcia = document?.querySelector('.florcia');
+		let florciaPosition = florcia?.getBoundingClientRect();
+		let up;
+		let right;
 
-	//let distance = 35;
-	let distance = florciaWidth + florciaWidth * speedMultiplier();
-	if (!win) {
-		const opponent = document.querySelector('.opponent');
+		//let distance = 35;
+		let distance = florciaWidth + florciaWidth * speedMultiplier();
+		if (!win) {
+			const opponent = document?.querySelector('.opponent');
 
-		if (opponentX < florciaPosition.left) {
-			opponentX = opponentX + distance;
-			if (opponentX > monitorWidth) {
-				opponentX = monitorWidth - 100;
+			if (opponentPosition.left < florciaPosition.left) {
+				right = true;
+				opponent.style.transform = 'rotate(0)';
+				opponentX = opponentX + distance;
+				if (opponentX > monitorWidth) {
+					opponentX = monitorWidth - 100;
+				}
 			}
-		}
-		if (opponentX > florciaPosition.right) {
-			opponentX = opponentX - distance;
-			if (opponentX <= 0) {
-				opponentX = 0;
+			if (opponentPosition.right > florciaPosition.right) {
+				right = false;
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(180deg)';
+				opponentX = opponentX - distance;
+				if (opponentX <= 0) {
+					opponentX = 0;
+				}
 			}
-		}
-		if (opponentY < florciaPosition.top) {
-			opponentY = opponentY + distance;
-			if (opponentY >= monitorHeight) {
-				opponentY = monitorHeight - 100;
+			if (opponentPosition.bottom < florciaPosition.top) {
+				up = false;
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(90deg)';
+				opponentY = opponentY + distance;
+				if (opponentY >= monitorHeight) {
+					opponentY = monitorHeight - 100;
+				}
 			}
-		}
-		if (opponentY > florciaPosition.bottom) {
-			opponentY = opponentY - distance;
-			if (opponentY <= 0) {
-				opponentY = 100;
+			if (opponentPosition.top > florciaPosition.bottom) {
+				up = true;
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(270deg)';
+				opponentY = opponentY - distance;
+				if (opponentY <= 0) {
+					opponentY = 100;
+				}
 			}
+			if (opponent != null) {
+				opponent.style.top = `${opponentY}px`;
+				opponent.style.left = `${opponentX}px`;
+			}
+			if (up && right) {
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(-45deg)';
+			}
+			if (!up && right) {
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(45deg)';
+			}
+			if (!up && !right) {
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(-215deg)';
+			}
+			if (up && !right) {
+				opponent.style.transform = 'rotate(0)';
+				opponent.style.transform = 'rotate(-135deg)';
+			}
+			up = null;
+			right = null;
+			checkForLose();
 		}
-
-		opponent.style.top = `${opponentY}px`;
-		opponent.style.left = `${opponentX}px`;
-		checkForLose();
 	}
 }
 
@@ -262,23 +299,32 @@ function checkForLose() {
 	const opponent = document.querySelector('.opponent');
 
 	let florciaPosition = florcia.getBoundingClientRect();
-	let opponentPosition = opponent.getBoundingClientRect();
-	if (
-		opponentPosition.right > florciaPosition.left &&
-		opponentPosition.left < florciaPosition.right &&
-		opponentPosition.bottom > florciaPosition.top &&
-		opponentPosition.top < florciaPosition.bottom
-	) {
-		win = true;
-		const burger = document.querySelector('.burger');
+	let opponentPosition = opponent?.getBoundingClientRect();
+	if (opponentPosition != null) {
+		if (
+			opponentPosition.right > florciaPosition.left &&
+			opponentPosition.left < florciaPosition.right &&
+			opponentPosition.bottom > florciaPosition.top &&
+			opponentPosition.top < florciaPosition.bottom
+		) {
+			win = true;
+			const burger = document.querySelector('.burger');
 
-		main.removeChild(burger);
-		main.removeChild(florcia);
-		main.removeChild(opponent);
+			main.removeChild(burger);
+			main.removeChild(florcia);
+			main.removeChild(opponent);
 
-		const winBox = document.createElement('div');
-		winBox.classList.add('win');
-		winBox.innerText = 'YOU LOST';
-		main.appendChild(winBox);
+			const winBox = document.createElement('div');
+			winBox.classList.add('win');
+			winBox.innerText = 'YOU LOST';
+			main.appendChild(winBox);
+		}
+	}
+}
+
+function klapekCheck() {
+	const klapek = document?.querySelector('.opponent');
+	if (klapek == null) {
+		location.reload();
 	}
 }
